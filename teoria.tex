@@ -280,6 +280,32 @@ Anche questa versione di 3-SAT è NP-completa.
 		\end{multlined}
 	\end{gather*}
 \end{demonstration}
+
+
+\begin{definition}[Riduzione polinomiale]
+	$\pbc{A}$ è NP-completo e $\pbc{B}\in\np$ e \[\underbracket{\pbc{A}\preceq\pbc{B}\implies \pbc{B}\ \text{è NP-completo}}_{\text{$\pbc{B}$ è NP-hard}}\]
+	
+	Una riduzione da $\pbc{A}$ a $\pbc{B}$ ($\pbc{A}\preceq\pbc{B}$) permette di risolvere $\pbc{A}$ in \textit{polytime} se esiste un programma/algoritmo che risolve $\pbc{B}$ in \textit{polytime}.
+\end{definition}
+Si definisce un risolutore per $\pbc{A}(x)$
+\begin{mdframed}[frametitlerule=true, frametitle={Risolutore per $\pbc{A}$}]
+	\textbf{Input: }$x\in \ipb{A}$\\
+	$y\gets Riduzione(x)$\\
+	$\textbf{return}\ Solutore-\pbc{B}(y)$
+\end{mdframed}
+e la subroutine di riduzione
+\begin{mdframed}[frametitle={Subroutine $\mathbf{Riduzione(x)}$},frametitlerule=true]
+	\textbf{Input:} $x\in \ipb{A}$\\
+	\textbf{Output:} $y\in\ipb{B}$
+\end{mdframed}
+\begin{figure}[thbp]
+	\centering
+	\includegraphics[width=0.7\linewidth]{dim-nae-3-sat-npc/riduzione.pdf}
+	\caption{}
+	\label{fig:}
+\end{figure}
+
+
 \subsection{NAE-k-SAT (Not all equal k-SAT)}
 \problem{NAE-k-SAT (Not all equal k-SAT)}{formula k-cnf $\phi$}{$\yes\iff\phi$ NAE-soddisfa k-SAT (esiste un assegnamento $a$ tale che in ogni clausola $C^i$, $a$ pone almeno un letterale a $T$ e almeno uno a $F$)}
 Si consideri l'assegnamento $\phi$
@@ -297,30 +323,80 @@ NAE-3-SAT è NP-completo
 	\item $\text{NAE-3-SAT}\in \np$: esiste un verificatore polinomiale $\color{Green}\checkmark$
 	\item NAE-3-SAT è NP-hard: $\text{3-SAT}\preceq\text{NAE-4-SAT}\preceq\text{NAE-3-SAT}$. Si dà la dimostrazione in due parti.
 \end{enumerate}
-\begin{definition}[Riduzione polinomiale]
-	$\pbc{A}$ è NP-completo e $\pbc{B}\in\np$ e \[\underbracket{\pbc{A}\preceq\pbc{B}\implies \pbc{B}\ \text{è NP-completo}}_{\text{$\pbc{B}$ è NP-hard}}\]
-	
-	Una riduzione da $\pbc{A}$ a $\pbc{B}$ ($\pbc{A}\preceq\pbc{B}$) permette di risolvere $\pbc{A}$ in \textit{polytime} se esiste un programma/algoritmo che risolve $\pbc{B}$ in \textit{polytime}.
-\end{definition}
-Si definisce un risolutore per $\pbc{A}(x)$
-\begin{lstlisting}[mathescape, escapeinside=||,frame=single]
-	|\textbf{Input: }|$x\in \ipb{A}$
-	$y\gets Riduzione(x)$
-	$\textbf{return}\ Solutore-\pbc{B}(y)$
-\end{lstlisting}
-e la subroutine di riduzione
-\begin{lstlisting}[mathescape, escapeinside=||,frame=single]
-	$Subroutine\ riduzione(x)$
-	|\textbf{Input:}| $x\in \ipb{A}$
-	|\textbf{Output:}| $y\in\ipb{B}$
-\end{lstlisting}
-\begin{figure}[thbp]
-	\centering
-	\includegraphics[width=0.7\linewidth]{dim-nae-3-sat-npc/riduzione.pdf}
-	\caption{}
-	\label{fig:}
-\end{figure}
-
 \begin{demonstration}[$\text{3-SAT}\preceq\text{NAE-4-SAT}$]
-	Per mostrare 
+	Per dimostrare che 3-SAT si riduce a NAE-4-SAT si può costruire una subroutine che 
+	\begin{equation*}
+		\underbracket{\phi}_{\text{3-CNF}}\xlongrightarrow{R}\underbracket{\psi}_{\text{4-CNF}}
+	\end{equation*}
+	tale che $\phi\ \text{è soddifacibile}\ \iff \psi\ \text{è NAE-soddisfacibile}$. Ovvero
+	\begin{align*}
+		\underbracket{\exists a\tc\forall C^i\ \text{dentro}\ \phi\ \text{risulta}\ C(a)=T}_{\substack{\text{in $C(a)$ esiste un letterale true}}}\iff&\exists b\tc \forall D^i\ \text{dentro}\ \psi\ D(i)^b\ \text{contiene}\\&\text{un letterale true e un letterale false}
+	\end{align*}
+	Si supponga di avere la formula \[\phi(x_1,x_2,x_3)=\underbracket{(x_1\ve x_2\ve \overline{x_3})}_{C^1}\ive\underbracket{(\overline{x_1}\ve\overline{x_2}\ve \overline{x_3})}_{C^2}\] Data la riduzione $R$ e $\phi=(x_1,\dots,x_n)=\bigwedge_{i=1}^n C^i$ crea $\psi=(x_1,\dots,x_n,z)$. Allora \[\psi(x_1,\dots,x_n,z)=\bigwedge_{i=1}^nD^i\] dove ogni \[D^i=C^i\ve z\] Ad esempio \[\psi(x_1,x_2,x_3,z)=\underbracket{(x_1\ve x_2\ve x_3\ve z)}_{D^1}\ive\underbracket{(\overline{x_1}\ve\overline{x_2}\ve\overline{x_3}\ve z)}_{D^2}\]
+	Si osserva che $R$ è polytime. Adesso si vuole dimostrare la coimplicazione. 
+	\begin{itemize}
+		\item[$\implies$] Si supponga che \[\exists a=(a_1,\dots,a_n)\tc \forall i C^i(a)=T\implies b=(a_1,\dots,a_n,F)\] da cui $b$  NAE-soddisfa $\psi$ \qed
+		\item[$\impliedby$] Si supponga che \[\exists b=(b_1,\dots,b_n,b_{n+1})\tc \forall D\ D^i(b)\ \text{contiene un letterale vero e uno falso}\] Allora si può assumere che $D^i(b)$ è del tipo $(l_1\ve l_2 \ve l_3\ve z)$ con $z=F$ e almento uno tra $l_1,\dots,l_n$ è posto a $T$. Se $z=T$ allora basterà invertirlo con uno di quelli tra gli $l_1,\dots,l_n$ posti a $F$ e metterlo nella posizione della $z$. \[D^i(\underbracket{b_1,\dots,b_n}_{l_1,\dots,l_n},\underbracket{b_{n+1}}_z)=(\underbracket{b_1,\dots,b_n}_T,\underbracket{b_{n+1}}_F)\implies C(b_1,\dots,b_n)=T\] da cui $\exists a=(b_1,\dots,b_n)$ che soddisfa $\phi$ \qed 
+	\end{itemize}
+	quindi è stato dimostrato che $\text{3-SAT}\preceq \text{NAE-4-SAT}$
+	\qed
+\end{demonstration}
+
+\begin{demonstration}[$\text{NAE-4-SAT}\preceq\text{NAE-3-SAT}$]
+	Si vuole mostrare come trasformare una formula $\psi$ in una formula $\varphi$
+	\begin{equation*}
+		\underbracket{\psi}_{\text{NAE-soddif.}} \longrightarrow \underbracket{\varphi}_{\text{NAE-soddif.}}
+	\end{equation*}
+	Si supponga che $\psi=C^1\ive C^2\ive\dots\ive C^n=\bigwedge_{i=1}^nC^i$ e ogni $C^4=l_1\ve l_2\ve\dots\ve l_4$. L'idea è di generare da $C^4$ due clausole $C^{i,1}=l_1\ve l_2\ve z^i$ e $C^{i,2}=l_3\ve l_4\ve \overline{z^i}$. La formula $\varphi=\bigwedge_{i=1}^m C^{i,1}\ive C^{i,2}$. La formula \[\psi={\color{Red}(x_1\ve x_2\ve x_3\ve \overline{x_4})}\ive{\color{Blue}(\overline{x_1}\ve x_2\ve \overline{x_3}\ve x_4)}\] diventa \[\varphi={\color{Red}(x_1\ve x_2\ve z^1)\ive (x_3\ve \overline{x_4}\ve\overline{z^1})}\ive{\color{Blue}(\overline{x_1}\ve x_2\ve z^2)\ive(x_3\ve x_4\ve \overline{z^2})}\] Si dimostra che $\exists a\ \text{per}\ \psi\implies\exists b\ \text{per}\ \varphi$. Infatti, dato che l'assegnamento $l_1,\dots,l_4$ NAE-soddisfa $\psi$, le coppie $l_1\ve l_2$ e $l_3\ve l_4$ sono o nella configurazione di due letterali con stesso valore e due con uno diverso, oppure tutti con valore diverso. Dunque si può scegliere una configurazione per le $z$ che NAE-soddisfa $\varphi$.
+	
+	Si dimostra adesso che $\exists b\ \text{per}\ \varphi \implies\exists a\ \text{per}\ \psi$. Per assurdo se si scegliesse un assegnamento indipendentemente dall'essere o non essere NAE-soddisfacibile
+		\[\psi={\color{Red}(\utrue{x_1}\ve \utrue{x_2}\ve \utrue{x_3}\ve \utrue{\overline{x_4}})}\ive{\color{Blue}(\ufalse{\overline{x_1}}\ve \ufalse{x_2}\ve \ufalse{\overline{x_3}}\ve \ufalse{x_4})}\]
+	si arriverebbe ad avere un assurdo (le $z$ e la loro negazione non possono avere stesso valore)
+	\[\varphi={\color{Red}(\utrue{x_1}\ve \utrue{x_2}\ve \ufalse{z^1})\ive (\utrue{x_3}\ve \utrue{\overline{x_4}}\ve\ufalse{\overline{z^1}})}\ive{\color{Blue}(\ufalse{\overline{x_1}}\ve \ufalse{x_2}\ve \utrue{z^2})\ive(\ufalse{x_3}\ve \ufalse{x_4}\ve \utrue{\overline{z^2}})}\]
+	e dunque necessariamente l'assegnamento $b$ deve porre per ciascuna clausola almeno un letterale vero e uno falso.
+	\qed
+\end{demonstration}
+NAE-3-SAT è NP-completo.
+
+\paragraph{Esercizio} Provare che $\text{k-SAT}\preceq\text{NAE-k-SAT}$. L'idea è di ripetere la dimostrazione facendo vedere che $\text{k-SAT}\preceq\text{NAE-(k+1)-SAT}$ e che $\text{NAE-(k+1)-SAT}\preceq \text{NAE-k-SAT}$.
+\begin{demonstration}[$\text{NAE-3-SAT}\preceq\text{3-col}$]
+	
+	Si vuole dimostrare adesso che $\text{NAE-3-SAT}\preceq\text{3-col}$ e dunque che \[\phi\xlongrightarrow{R}G_\phi(V,E)\] Avendo $\phi=C^1\ive C^2\ive\dots\ive C^n$ dove ogni $C^i=l_1^i\ve l_2^i\ve l_3^i$ si può costruire un grafo $G$ nel seguente modo
+	\subsubsection{Codifica dei letterali}
+	\begin{itemize}
+		\item si collega ciascun vertice contenente un $x_i$ con il proprio negato $\overline{x_i}$;
+		\item si collegano i vertici al vertice $v$;
+		\item si associa il colore rosso ai vertici a cui corrispondono letterali con valore falso e il colore blu a quelli a cui corrispondono letterali con valore vero;
+		\item si associa il verde al vertice rimanente in $G$.
+	\end{itemize}
+	\subsubsection{Codifica delle clausole}
+	\begin{itemize}
+		\item si creano dei grafi $G_{C_i}$ che rappresentano le clausole. Ciascun letterale deve essere collegato con quello opposto contenuto in $G$. Nella \cref{fig:rgb-graph} $C_i = x_1 \ve \overline{x_2}\ve x_3$;
+		\item si colorano due vertici con i colori blu e rosso (blu per i vertici true e rosso per i vertici false) e il terzo vertice viene colorato di verde per mantenere sia $G$ che $G_{C_i}$ propriamente colorati.
+	\end{itemize}
+	\begin{figure}[thbp]
+		\centering
+		\includegraphics[width=\linewidth]{nae-3-sat-to-3-col/nae-3-sat-3-col}
+		\caption{grafo 3-col.}
+		\label{fig:rgb-graph}
+	\end{figure}
+	\paragraph{Polinomialità della riduzione}La riduzione è polinomiale. Se la formula ha $3m$ letterali, il grafo ha $3m+2n+1$ vertici, dove $3m$ sono il numero di vertici di tutti i grafi $G_{C_i}$, $2n$ sono il numero di vertici blu e rossi che compongono $G$ e $1$ è il vertice verde di $G$. Il numero degli archi è  $2n+n+3m+3m$ dove $2n$ sono quelli che partono dal vertice verde, $n$ sono quelli che collegano vertici di colore blu a quelli di colore rosso di $G$ e $3m$ gli archi che congiungono i grafi $G_{C_i}$ con $G$ e $3m$ che compongono i grafi $G_{C_i}$.
+	\begin{demonstration}[$\implies$]
+		Si dimostra che 
+		\begin{gather*}
+			\phi\ \text{è NAE-soddif.}\ \implies\exists a=(a_1,\dots,a_n)\in\{T,F\}^n \tc\forall i\ C^i(a)\ \text{contiene}\\\text{un letterale T e uno F e}\ \exists j,k\tc l^i_j(a)=T\ive l^i_k(a)=F
+		\end{gather*}
+		Si definisce una colorazione per un vertice (a cui si associa un letterale) come 
+		\begin{gather*}
+			c(w)=\begin{cases}
+				B&\text{se $w$ è etichettato con $l_i$ e $l_i(a)=T$}\\
+				R&\text{se $w$ è etichettato con $l_i$ e $l_i(a)=F$}
+			\end{cases}
+		\end{gather*}
+		e $c(v)=G$. Si osserva che il grafo $G$ è propriamente colorato per costruzione. Gli archi che collegano i vertici di $G$ e $G_{C_i}$ sono propriamente colorati. Gli archi dei grafi $G_{C_i}$ per la NAE-soddisfacibilità di ciascuna clausola e per come sono stati costruiti sono propriamente colorati.\qed
+	\end{demonstration}
+	\begin{demonstration}[$\impliedby$]
+		Siano i grafi $G$ e $G_{C_i}$ propriamente colorati. Si mostra che, scelto un assegnamento di colori per $G$ tale da renderlo propriamente colorato, esiste un assegnamento che collega i due grafi che è propriamente colorato. Si mostra che la colorazione segue quella di $G_{C_i}$. Infine si mostra che la colorazione di $G_{C_i}$ corrisponde ad una clausola $C_i$ che è NAE-soddisfacibile.\qed
+	\end{demonstration}
+	questo chiude la dimostrazione. \qed
 \end{demonstration}
