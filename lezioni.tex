@@ -1,0 +1,68 @@
+\begin{definition}[Classe P]
+	Un problema computazionale $\pbc{A}$ è nella classe $\p$
+	\[P=\{\pbc{A}\ \textit{decisione}\tc \exists A\, \textit{per $\pbc{A}$ con $A$ polytime}\}\]
+	Dato $\pbc{A}$ possiamo definire per $\pbc{A}$ un problema di decisione $\pbc{A}^{\textit{DEC}}$
+	\begin{equation*}
+		A^{\textit{DEC}}=\begin{cases}
+			yes & sol_\pbc{A}(x)\ne \emptyset\\
+			no & sol_\pbc{A}(x)=\emptyset
+		\end{cases}
+	\end{equation*}
+	Se il problema $\pbc{A}^\textit{DEC}\notin \p$ allora $\pbc{A}$ non ha un algoritmo \textit{polytime}.
+\end{definition}
+
+\begin{definition}[Classe EXP]
+	Un problema computazionale $\pbc{A}$ è in $\exps$ se
+	\begin{equation*}
+		\exps = \{\pbc{A}\ \textit{decisione}\tc \exists A\, \textit{per $\pbc{A}$ con $A$ exp time} (\forall x\in \ipb{A}\, A(x)=\pbc{A}(x))\}
+	\end{equation*}
+\end{definition}
+
+\begin{definition}[Classe NP]
+	Si definisce $\np$ la classe dei problemi \textit{``non deterministic polynomial time''}
+	\begin{gather*}
+		\np = \{\pbc{A}\ \textit{decisione}\tc\exists\ \textit{algo}\ B_\pbc{A}(\cdot,\cdot)\ \textit{tale che}\ \underbracket{T_B(x,y)=poly(|x|)}_{\exists c\colon \forall x,y\ T_B(x,y)=O(|x|^c) }\ive\\ \forall x \in \ipb{A}\tc \pbc{A}(x)=\yes\iff \exists y\tc B(x,y)=\yes\}
+	\end{gather*}
+\end{definition}
+\subsubsection{Osservazioni}
+\begin{enumerate}
+	\item La definizione è asimmetrica, ovvero parla solo di istanze $\yes$. Ovvero quando l'istanza è $\no$, non esiste il certificato
+	\item $\exists c\ \textit{costante}\tc |y|=|x|^c$
+	\item $\p\subseteq \np$ infatti
+	\begin{gather*}
+		\pbc{A}\in \p\implies \exists A\colon A(x)=\pbc{A}(x)
+	\end{gather*}
+	Definiamo $B(x,y)=A(x)$ allora:
+	\begin{gather*}
+		\forall x \in \ipb{A}\tc A(x)=\pbc{A}(x)\ive x=\yes\iff B(x,y)=A(x)=\yes
+ 	\end{gather*}
+ 	ogni problema risolvibile ha un verificatore polinomiale. Ugualmente un risolutore polinomiale è anche un verificatore polinomiale.
+ 	\item $\np\subseteq\exps$. Infatti 
+ 	\begin{gather*}
+ 		\pbc{A} \in \np,\ \exists c\ \textit{costante}, B_\pbc{A}(x,y)\tc \pbc{A}(x)=\yes\iff \\\exists y \in \{0,1\}^{|x|^c} \tc B_\pbc{A}(x,y)=\yes
+ 	\end{gather*}
+ 	definiamo un algoritmo $A^\exps$
+ 	\begin{gather*}
+ 		A^{\exps}(x) = \begin{cases}
+ 			\forall y\in \{0,1\}^{|x|^c}\quad B_\pbc{A}(x,y)=\yes \implies \yes
+ 			\\
+ 			\textit{return no}
+ 		\end{cases}
+ 	\end{gather*}
+ 	$A^\exps=A(x)$
+ 	\begin{itemize}
+ 		\item se $\pbc{A}(x)=\yes \implies \exists y\in {0,1}^{|x|^c}\tc B(x,y)=\yes \implies A^{\exps}(x)=\yes$
+ 		\item se $\pbc{A}(x)=\yes \implies \notexists y\in {0,1}^{|x|^c}\tc B(x,y)=\yes \implies A^{\exps}(x)=\no$
+ 	\end{itemize}
+ 	inoltre $T_A^\exps(x)=O(2^{|x|^c})$ perché \[T_A^\exps(x)=O(2^{|x|^c}\cdot T_B(x,y) )=O(2^{|x|^c}\cdot |x|^c)=O(2^{|x|^{c+1}})\]
+\end{enumerate}
+
+Basta che solo un problema in $\npc$ si riduca in un problema in $\p$ per risolvere la relazione tra $\p$ e $\np$. 
+
+Se A si riduce a B e B appartiene a P allora A appartiene a P che equivale a dire che se A si riduce a B e A non appartiene a P allora B non appartiene a P
+\begin{gather*}
+	(\pbc{A}\preceq\pbc{B}\ive \pbc{B}\in\p\implies \pbc A\in P)\iff\\
+	(\pbc{A}\preceq\pbc{B}\ive \pbc{A}\notin\p\implies\pbc{B}\notin \p)
+\end{gather*}
+
+Per il problema $k-col$ la funzione mappa istanze yes con yes e istanze no con no.

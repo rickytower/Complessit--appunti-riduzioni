@@ -1,0 +1,61 @@
+\documentclass[italian,10pt,a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{nameref}
+\usepackage{babel}
+\usepackage{hyperref}
+\usepackage{cancel}
+\usepackage{xspace}
+\usepackage{cleveref}
+\usepackage{mdframed}
+\usepackage{minted}
+\usepackage{listings}
+\graphicspath{{img/theory/}}
+%\usepackage{generictoolbox}
+%% Qui copierai la definizione di generictoolbox
+\newtheorem{definition}{Definizione}
+\newtheorem{theorem}{Teorema}
+\newtheorem{demonstration}{Dimostrazione}
+\newtheorem{lemma}{Lemma}
+\newcommand{\pbc}[1]{\mathbb{#1}}
+\newcommand{\yes}{\textit{yes}}
+\newcommand{\ve}{\,\vee\,}
+\newcommand{\ive}{\,\wedge\,}
+\newcommand{\polytime}{\textit{polytime}}
+\newcommand{\tc}{\,\colon\,}
+\newcommand{\np}{\text{NP}}
+\newcommand{\npc}{\text{NPC}}
+\newcommand{\p}{\text{P}}
+\newcommand{\ipb}[1]{\mathcal{I}(\pbc{#1})}
+\newcommand{\notexists}{\,\cancel{\exists}\,}
+\newcommand{\onlyexists}{!\exists}
+\newcommand{\n}{\mathbb{N}}
+\newcommand{\z}{\mathbb{Z}}
+\newcommand{\rs}{\mathbb{R}}
+\newcommand{\cs}{\mathbb{C}}
+\newcommand{\exps}{\textit{EXP}}
+\newcommand{\no}{\textit{no}}
+\newcommand{\problem}[3]{
+	\begin{mdframed}[frametitle=\textbf{#1},frametitlerule=true]
+		\textbf{Input:}\hspace{0.5\parindent}#2\\
+		\textbf{Output:}\hspace{0.5\parindent}#3
+	\end{mdframed}
+}
+\newcommand{\red}[1]{{\color{Red}#1}}
+\newcommand{\green}[1]{{\color{Green}#1}}
+
+
+
+\title{Manuale per la preparazione all'esame di complessità}
+\author{Riccardo Torre}
+\begin{document}
+	\maketitle
+	\chapter{Appunti delle lezioni}
+	\chapter{Riduzioni}
+	\input{teoria}
+\end{document}
